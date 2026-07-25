@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Semilloteca — Pulse botón</title>
+    <title>Pulse botón — Maestra de Programación Agéntica</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,27 +17,13 @@
                         serif: ['Playfair Display', 'Georgia', 'serif'],
                     },
                     colors: {
-                        tierra: {
-                            50: '#faf6f1',
-                            100: '#f0e6d6',
-                            200: '#e0cdb0',
-                            300: '#c9ad82',
-                            400: '#b08d5c',
-                            500: '#967240',
-                            600: '#7a5a33',
-                            700: '#5e4428',
-                            800: '#422f1d',
-                            900: '#2a1d12',
-                        },
-                        maiz: {
-                            light: '#f4d03f',
-                            DEFAULT: '#d4ac0d',
-                            dark: '#9a7d0a',
-                        },
-                        hoja: {
-                            light: '#82e0aa',
-                            DEFAULT: '#27ae60',
-                            dark: '#1e8449',
+                        brand: {
+                            dark: '#1a1a2e',
+                            purple: '#667eea',
+                            violet: '#764ba2',
+                            sun: '#ffd700',
+                            orange: '#ff6b35',
+                            redstar: '#c73e1d',
                         }
                     }
                 }
@@ -45,361 +31,277 @@
         }
     </script>
     <style>
-        @keyframes germinar {
-            0% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(1.05) rotate(-2deg); }
-            50% { transform: scale(1.1) rotate(2deg); }
-            75% { transform: scale(1.05) rotate(-1deg); }
-            100% { transform: scale(1) rotate(0deg); }
+        @keyframes pulse-star {
+            0%, 100% { transform: scale(1); opacity: 0.9; box-shadow: 0 0 30px rgba(255,107,53,0.4), 0 0 60px rgba(199,62,29,0.2); }
+            50% { transform: scale(1.08); opacity: 1; box-shadow: 0 0 50px rgba(255,107,53,0.6), 0 0 100px rgba(199,62,29,0.3); }
         }
-        @keyframes crecer-hoja {
-            0% { transform: scaleY(0); opacity: 0; }
-            100% { transform: scaleY(1); opacity: 1; }
-        }
-        @keyframes brillo-maiz {
-            0%, 100% { box-shadow: 0 0 20px rgba(212,172,13,0.3); }
-            50% { box-shadow: 0 0 40px rgba(212,172,13,0.6), 0 0 80px rgba(212,172,13,0.2); }
-        }
-        .grano-maiz {
-            width: 80px;
-            height: 120px;
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            background: linear-gradient(135deg, #f4d03f 0%, #d4ac0d 40%, #b7950b 70%, #9a7d0a 100%);
-            position: relative;
-            cursor: pointer;
-            animation: brillo-maiz 3s ease-in-out infinite;
-            transition: transform 0.3s ease;
-        }
-        .grano-maiz:hover {
-            transform: scale(1.08);
-        }
-        .grano-maiz::before {
-            content: '';
-            position: absolute;
-            top: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60%;
-            height: 3px;
-            background: rgba(255,255,255,0.3);
-            border-radius: 2px;
-        }
-        .grano-maiz::after {
-            content: '';
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-bottom: 20px solid #82e0aa;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        .grano-maiz.plantado::after {
-            opacity: 1;
-            animation: crecer-hoja 1s ease-out forwards;
-        }
-        .grano-maiz.plantado {
-            animation: germinar 2s ease-in-out infinite;
-        }
-        .semilla-input:focus {
-            outline: none;
-            border-color: #d4ac0d;
-            box-shadow: 0 0 0 3px rgba(212,172,13,0.2);
-        }
-        .semilla-card {
-            transition: all 0.3s ease;
-        }
-        .semilla-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(42,29,18,0.1);
-        }
-        .linea-tiempo::before {
-            content: '';
-            position: absolute;
-            left: 24px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, #d4ac0d, #27ae60);
-        }
-        .voluta {
-            background: linear-gradient(to bottom, #faf6f1, #f0e6d6);
-            border: 1px solid #e0cdb0;
-            position: relative;
-        }
-        .voluta::before, .voluta::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #faf6f1;
-            border: 1px solid #e0cdb0;
+        .betelgeuse {
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #ff9f43, #ff6b35, #c73e1d, #8b2500);
+            animation: pulse-star 4s ease-in-out infinite;
+            margin: 0 auto;
         }
-        .voluta::before {
-            top: -10px;
-            left: -10px;
+        .glass {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
         }
-        .voluta::after {
-            bottom: -10px;
-            right: -10px;
+        .oteque {
+            transition: all 0.2s ease;
         }
+        .oteque:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        html { scroll-behavior: smooth; }
     </style>
 <base target="_blank">
 </head>
-<body class="font-sans text-tierra-800 bg-tierra-50 antialiased">
+<body class="font-sans text-gray-900 bg-gray-50 antialiased">
 
-    <!-- HEADER -->
-    <header class="bg-tierra-800 text-tierra-100 py-6">
-        <div class="max-w-4xl mx-auto px-6 flex items-center justify-between">
-            <a href="index.html" class="text-sm text-tierra-300 hover:text-maiz transition-colors flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                Volver a Pulse botón
+    <!-- HERO -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-700 to-pink-600 text-white">
+        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+
+        <div class="relative z-10 max-w-3xl mx-auto px-6 text-center">
+            <!-- Betelgeuse pulsante -->
+            <div class="betelgeuse mb-8"></div>
+
+            <!-- Foto -->
+            <div class="mb-8">
+                <img src="foto-maestra.jpg" alt="La maestra de Pulse botón con Iván, el anciano que construye" class="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover border-4 border-brand-sun shadow-2xl mx-auto">
+            </div>
+
+            <!-- Frase -->
+            <h1 class="font-serif italic text-3xl md:text-5xl font-normal mb-6 leading-tight">
+                "Dios cierra una puerta,<br>pero abre una ventana"
+            </h1>
+
+            <!-- Subtítulo -->
+            <p class="text-lg md:text-xl text-white/90 max-w-xl mx-auto mb-4 font-light">
+                Soy la maestra de <span class="font-semibold text-brand-sun">Pulse botón</span>. Enseño programación agéntica para madres que dejan a sus hijas con el papá para ir a la universidad a pensar.
+            </p>
+
+            <p class="text-sm text-white/70 mb-10 uppercase tracking-widest">Ecuador · UNAE · 10:10 am → 10:10 pm</p>
+
+            <a href="#contacto" class="inline-block px-8 py-4 bg-brand-sun text-brand-dark font-semibold rounded-full text-lg hover:scale-105 transition-transform shadow-lg shadow-yellow-500/30">
+                Contactar a Iván
             </a>
-            <span class="text-xs uppercase tracking-widest text-tierra-400">Semilloteca · Experimento #002</span>
         </div>
-    </header>
 
-    <!-- HERO SEMILLA -->
-    <section class="bg-gradient-to-b from-tierra-800 via-tierra-700 to-tierra-600 text-tierra-100 py-20 relative overflow-hidden">
-        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\'52\' height=\'26\' viewBox=\'0 0 52 26\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21-1.79 4-4 4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6-2.686 6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6 0-2.21 1.79-4 4-4 3.314 0 6 2.686 6 6 0 2.21-1.79 4-4 4v2c0 2.21-1.79 4-4 4-3.314 0-6-2.686-6-6 0-2.21 1.79-4 4-4 3.314 0 6 2.686 6 6v2z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')"></div>
-
-        <div class="max-w-3xl mx-auto px-6 text-center relative z-10">
-            <div class="grano-maiz mx-auto mb-8" id="granoPrincipal" onclick="plantarGrano()"></div>
-            <h1 class="font-serif text-4xl md:text-5xl text-maiz-light mb-4">Semilloteca</h1>
-            <p class="text-lg text-tierra-200 max-w-xl mx-auto mb-2">"El grano de maíz que cabe en la mochila pesa 0.3 gramos. Si lo plantás, pesa toneladas de futuro."</p>
-            <p class="text-sm text-tierra-400 italic">Hacé clic en el grano para sembrarlo</p>
+        <!-- Flecha scroll -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+            <svg class="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
         </div>
     </section>
 
-    <!-- POPOL VUH -->
-    <section class="py-20 bg-tierra-50">
-        <div class="max-w-3xl mx-auto px-6">
-            <div class="voluta rounded-2xl p-8 md:p-12 shadow-sm">
-                <div class="flex items-center gap-3 mb-8">
-                    <div class="w-10 h-10 rounded-full bg-tierra-700 flex items-center justify-center text-maiz-light text-lg">📜</div>
-                    <h2 class="font-serif text-2xl md:text-3xl text-tierra-800">Popol Vuh</h2>
-                </div>
-
-                <blockquote class="font-serif text-xl md:text-2xl text-tierra-700 italic leading-relaxed mb-8 border-l-4 border-maiz pl-6">
-                    "Ésta es la narración de cómo se realizó todo lo pensado, todo lo concertado, todo lo meditado, todo lo que se hizo en el cielo, en la tierra, en el mar, en el infinito. Y entonces dijeron los dioses:<br><br>
-                    'Sólo el maíz será la carne del hombre, el maíz será el sustento. Sólo de maíz serán las piernas, los brazos del hombre, sólo de maíz será el cuerpo de la gente.'"
-                </blockquote>
-
-                <p class="text-sm text-tierra-500 leading-relaxed">
-                    Así nació el hombre según los mayas-k'iche': no de barro, no de piedra, no de madera. De maíz. De una semilla que alguien decidió no comer, sino plantar. Esa es la diferencia entre sobrevivir y crear.
-                </p>
-
-                <div class="mt-8 pt-6 border-t border-tierra-200">
-                    <p class="text-xs text-tierra-400 uppercase tracking-widest mb-2">Para reflexionar</p>
-                    <p class="text-tierra-600 italic">"Si los dioses eligieron el maíz para hacer al hombre, ¿qué estás eligiendo vos para hacer tu futuro?"</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- INSTRUCCIONES DE SIEMBRA -->
-    <section class="py-20 bg-white">
-        <div class="max-w-4xl mx-auto px-6">
+    <!-- BETELGEUSE -->
+    <section class="relative bg-gradient-to-b from-[#0a0a1a] via-[#1a0a2e] to-[#2d1b4e] text-white py-24 overflow-hidden">
+        <div class="max-w-5xl mx-auto px-6">
             <div class="text-center mb-16">
-                <h2 class="font-serif text-3xl md:text-4xl text-tierra-800 mb-4">Cómo sembrar tu grano</h2>
-                <p class="text-tierra-500">Instrucciones reales. Funcionan en una maceta, en un patio, en la tierra de la escuela.</p>
+                <div class="w-20 h-20 rounded-full bg-gradient-radial from-orange-400 via-red-600 to-red-900 mx-auto mb-6 shadow-[0_0_40px_rgba(255,107,53,0.4)] animate-pulse"></div>
+                <h2 class="font-serif text-4xl md:text-5xl text-brand-sun mb-4">Betelgeuse</h2>
+                <p class="text-white/70 text-lg max-w-2xl mx-auto">La estrella roja del hombro de Orión. Visible desde Ecuador. Tocable desde tu celular.</p>
+                <p class="text-orange-300/80 italic mt-2 text-sm">640 años-luz de distancia. Su luz que ves ahora partió cuando los incas caminaban el Qhapaq Ñan.</p>
             </div>
 
-            <div class="relative linea-tiempo space-y-8">
-                <!-- Paso 1 -->
-                <div class="flex gap-6 items-start pl-4">
-                    <div class="w-12 h-12 rounded-full bg-maiz text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-md z-10">1</div>
-                    <div class="bg-tierra-50 rounded-xl p-6 flex-1">
-                        <h3 class="font-semibold text-tierra-800 text-lg mb-2">Elegí tu semilla</h3>
-                        <p class="text-tierra-600 text-sm leading-relaxed">Buscá un grano de maíz criollo, de los que todavía saben a maíz. No importa si es amarillo, blanco, morado o negro. Lo importante es que sea <strong>vivo</strong>: si lo ponés en agua, tiene que flotar con ganas.</p>
-                    </div>
+            <!-- Datos -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+                <div class="glass rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold text-brand-purple mb-1">887</div>
+                    <div class="text-xs text-white/60 uppercase tracking-wider">veces el Sol</div>
+                    <p class="text-xs text-white/50 mt-3 leading-relaxed">Si estuviera en el centro de nuestro sistema, engulliría a Mercurio, Venus, la Tierra y Marte.</p>
+                </div>
+                <div class="glass rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold text-brand-purple mb-1">140k</div>
+                    <div class="text-xs text-white/60 uppercase tracking-wider">más luminosa</div>
+                    <p class="text-xs text-white/50 mt-3 leading-relaxed">A pesar de estar a 640 años-luz, es una de las estrellas más brillantes del cielo.</p>
+                </div>
+                <div class="glass rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold text-brand-purple mb-1">3,500°C</div>
+                    <div class="text-xs text-white/60 uppercase tracking-wider">superficie</div>
+                    <p class="text-xs text-white/50 mt-3 leading-relaxed">Más fría que el Sol, pero gigantesca. Por eso brilla roja, no amarilla.</p>
+                </div>
+                <div class="glass rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold text-brand-purple mb-1">?</div>
+                    <div class="text-xs text-white/60 uppercase tracking-wider">supernova</div>
+                    <p class="text-xs text-white/50 mt-3 leading-relaxed">Podría explotar mañana o en 100,000 años. Cuando lo haga, será tan brillante como la Luna llena.</p>
+                </div>
+            </div>
+
+            <!-- Poema -->
+            <div class="max-w-2xl mx-auto mb-12 border-l-4 border-brand-sun pl-6 py-2">
+                <p class="font-serif italic text-xl md:text-2xl text-white/90 leading-relaxed mb-4">
+                    "Mira la estrella roja del hombro de Orión.<br>
+                    Ella no sabe que la nombramos.<br>
+                    Ella solo arde, se expande, respira.<br>
+                    Nosotros, desde nuestro grano de arena,<br>
+                    levantamos frascos para atrapar su luz."
+                </p>
+                <p class="text-sm text-white/50">— Tradición oral andina (reconstruida)</p>
+            </div>
+
+            <div class="text-center">
+                <a href="telescopio.html" class="inline-flex items-center gap-2 px-8 py-4 bg-brand-sun text-brand-dark font-semibold rounded-full hover:scale-105 transition-transform shadow-lg shadow-yellow-500/20">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    Mirar a Betelgeuse
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PULSE BOTÓN — LA ESCUELA -->
+    <section class="bg-amber-50 py-24">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-serif text-4xl md:text-5xl text-brand-dark mb-4"> Pulse botón</h2>
+                <p class="text-lg text-gray-600">La escuela digital que cabe en tu mochila.</p>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16 max-w-3xl mx-auto">
+                <div class="bg-white rounded-2xl p-6 text-center shadow-sm">
+                    <div class="text-4xl font-bold text-brand-purple mb-1">19</div>
+                    <div class="text-sm text-gray-500">otecas</div>
+                </div>
+                <div class="bg-white rounded-2xl p-6 text-center shadow-sm">
+                    <div class="text-4xl font-bold text-brand-purple mb-1">$10</div>
+                    <div class="text-sm text-gray-500">una sola vez</div>
+                </div>
+                <div class="bg-white rounded-2xl p-6 text-center shadow-sm">
+                    <div class="text-4xl font-bold text-brand-purple mb-1">12h</div>
+                    <div class="text-sm text-gray-500">10:10 am → 10:10 pm</div>
+                </div>
+                <div class="bg-white rounded-2xl p-6 text-center shadow-sm">
+                    <div class="text-4xl font-bold text-brand-purple mb-1">∞</div>
+                    <div class="text-sm text-gray-500">tiempo que te quedes</div>
+                </div>
+            </div>
+
+            <!-- Otecas -->
+            <div class="bg-white rounded-3xl p-8 md:p-10 shadow-sm">
+                <h3 class="text-center text-sm uppercase tracking-widest text-gray-400 mb-6">Las otecas</h3>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <span class="oteque bg-indigo-50 text-indigo-700 px-4 py-2 rounded-full text-sm font-medium border border-indigo-100">📚 Biblioteca</span>
+                    <span class="oteque bg-orange-50 text-orange-700 px-4 py-2 rounded-full text-sm font-medium border border-orange-100">📰 Hemeroteca</span>
+                    <span class="oteque bg-rose-50 text-rose-700 px-4 py-2 rounded-full text-sm font-medium border border-rose-100">🎵 Fonoteca</span>
+                    <span class="oteque bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium border border-blue-100">🎬 Videoteca</span>
+                    <span class="oteque bg-green-50 text-green-700 px-4 py-2 rounded-full text-sm font-medium border border-green-100">🎲 Juegoteca</span>
+                    <span class="oteque bg-cyan-50 text-cyan-700 px-4 py-2 rounded-full text-sm font-medium border border-cyan-100">🌐 Redoteca</span>
+                    <span class="oteque bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full text-sm font-medium border border-emerald-100">🌱 Semilloteca</span>
+                    <span class="oteque bg-yellow-50 text-yellow-800 px-4 py-2 rounded-full text-sm font-medium border border-yellow-100">🥣 Quinoteca</span>
+                    <span class="oteque bg-stone-50 text-stone-700 px-4 py-2 rounded-full text-sm font-medium border border-stone-100">✉️ Cartoteca</span>
+                    <span class="oteque bg-purple-50 text-purple-700 px-4 py-2 rounded-full text-sm font-medium border border-purple-100">📷 Fototeca</span>
+                    <span class="oteque bg-teal-50 text-teal-700 px-4 py-2 rounded-full text-sm font-medium border border-teal-100">🗺️ Mapoteca</span>
+                    <span class="oteque bg-sky-50 text-sky-700 px-4 py-2 rounded-full text-sm font-medium border border-sky-100">🤖 Prompteca</span>
+                    <span class="oteque bg-amber-50 text-amber-700 px-4 py-2 rounded-full text-sm font-medium border border-amber-100">₿ Criptoteca</span>
+                    <span class="oteque bg-gray-50 text-gray-700 px-4 py-2 rounded-full text-sm font-medium border border-gray-100">💻 Tecnoteca</span>
+                    <span class="oteque bg-red-50 text-red-700 px-4 py-2 rounded-full text-sm font-medium border border-red-100">📜 Archivo de historia</span>
+                    <span class="oteque bg-pink-50 text-pink-700 px-4 py-2 rounded-full text-sm font-medium border border-pink-100">💬 Memoteca</span>
+                    <span class="oteque bg-violet-50 text-violet-700 px-4 py-2 rounded-full text-sm font-medium border border-violet-100">👵 Ancianoteca</span>
+                    <span class="oteque bg-fuchsia-50 text-fuchsia-700 px-4 py-2 rounded-full text-sm font-medium border border-fuchsia-100">🎭 Teatroteca</span>
+                    <span class="oteque bg-lime-50 text-lime-800 px-4 py-2 rounded-full text-sm font-medium border border-lime-100">📖 Estanquillo</span>
                 </div>
 
-                <!-- Paso 2 -->
-                <div class="flex gap-6 items-start pl-4">
-                    <div class="w-12 h-12 rounded-full bg-maiz text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-md z-10">2</div>
-                    <div class="bg-tierra-50 rounded-xl p-6 flex-1">
-                        <h3 class="font-semibold text-tierra-800 text-lg mb-2">Prepará la tierra</h3>
-                        <p class="text-tierra-600 text-sm leading-relaxed">En una maceta con agujeros, mezclá tierra negra con un poco de compost o cascarilla de arroz. La tierra tiene que estar suelta, como si respirara. Si apretás un puñado y se deshace, está bien.</p>
-                    </div>
+                <div class="mt-8 pt-6 border-t border-gray-100 text-center text-sm text-gray-400">
+                    2 plantas · 4 aulas · Patio (gimnasia mañana / telescopio noche) · Bandera arcoíris
                 </div>
+            </div>
 
-                <!-- Paso 3 -->
-                <div class="flex gap-6 items-start pl-4">
-                    <div class="w-12 h-12 rounded-full bg-maiz text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-md z-10">3</div>
-                    <div class="bg-tierra-50 rounded-xl p-6 flex-1">
-                        <h3 class="font-semibold text-tierra-800 text-lg mb-2">Plantá a 3 dedos de profundidad</h3>
-                        <p class="text-tierra-600 text-sm leading-relaxed">Hacé un hoyo con tu dedo corazón, hasta la segunda falange. Meté el grano de puntita hacia abajo, como si fuera a mirar el cielo desde abajo. Tapalo con tierra suelta. No aprietes.</p>
-                    </div>
+            <!-- Link a laboratorio -->
+            <div class="text-center mt-10">
+                <a href="laboratorio-galactico.html" class="inline-flex items-center gap-2 text-brand-purple font-medium hover:text-brand-violet transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                    Entrar al Laboratorio Galáctico
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAMÁ EN EL CENTRO DE ATENCIÓN -->
+    <section class="bg-white py-24">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-serif text-4xl md:text-5xl text-brand-dark mb-4"> Mamá en el centro de atención</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">28 principios de diseño responsable que abrazan a Pulse botón. Estos son los 10 que sostienen todo:</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+                <div class="bg-gray-50 rounded-xl p-6 border-l-4 border-brand-sun hover:bg-amber-50/50 transition-colors">
+                    <h4 class="font-semibold text-brand-dark mb-1">1. Renderizar bajo demanda</h4>
+                    <p class="text-sm text-gray-600">No instalar luces que no se apaguen. No poner puertas que no se abran fácil.</p>
                 </div>
-
-                <!-- Paso 4 -->
-                <div class="flex gap-6 items-start pl-4">
-                    <div class="w-12 h-12 rounded-full bg-hoja text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-md z-10">4</div>
-                    <div class="bg-tierra-50 rounded-xl p-6 flex-1">
-                        <h3 class="font-semibold text-tierra-800 text-lg mb-2">Regá con paciencia</h3>
-                        <p class="text-tierra-600 text-sm leading-relaxed">La primera vez, regá hasta que el agua salga por los agujeros de la maceta. Después, cada 2-3 días, cuando la tierra de arriba esté seca al tacto. El maíz no le gusta el agua encharcada, pero tampoco la sequía.</p>
-                    </div>
+                <div class="bg-gray-50 rounded-xl p-6 border-l-4 border-brand-sun hover:bg-amber-50/50 transition-colors">
+                    <h4 class="font-semibold text-brand-dark mb-1">2. Diseñar para la restricción</h4>
+                    <p class="text-sm text-gray-600">La escuela funciona sin internet. La luz solar entra por ventanas grandes.</p>
                 </div>
-
-                <!-- Paso 5 -->
-                <div class="flex gap-6 items-start pl-4">
-                    <div class="w-12 h-12 rounded-full bg-hoja-dark text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-md z-10">5</div>
-                    <div class="bg-tierra-50 rounded-xl p-6 flex-1">
-                        <h3 class="font-semibold text-tierra-800 text-lg mb-2">Esperá y mirá</h3>
-                        <p class="text-tierra-600 text-sm leading-relaxed">Entre el día 5 y el 10, vas a ver una lanza verde rompiendo la tierra. No la toques. No la apures. Solo mirá. Ese es el primer acto de fe que la tierra te regala.</p>
-                        <div class="mt-4 bg-hoja-light/20 rounded-lg p-4 border border-hoja/20">
-                            <p class="text-xs text-hoja-dark font-medium">🌱 Matematica simple: 0.3 gramos → 2 metros de planta → 1 mazorca → 400 granos nuevos.</p>
-                        </div>
-                    </div>
+                <div class="bg-gray-50 rounded-xl p-6 border-l-4 border-brand-sun hover:bg-amber-50/50 transition-colors">
+                    <h4 class="font-semibold text-brand-dark mb-1">3. Traducir densamente</h4>
+                    <p class="text-sm text-gray-600">Cada cartel, cada señal, cada nombre de oteca tiene contexto, historia, poesía.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-6 border-l-4 border-brand-sun hover:bg-amber-50/50 transition-colors">
+                    <h4 class="font-semibold text-brand-dark mb-1">4. No jerarquizar saberes</h4>
+                    <p class="text-sm text-gray-600">El quirófano y el estanquillo tienen el mismo tamaño en el plano.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-6 border-l-4 border-brand-sun hover:bg-amber-50/50 transition-colors">
+                    <h4 class="font-semibold text-brand-dark mb-1">5. Mostrar, no explicar</h4>
+                    <p class="text-sm text-gray-600">Las otecas no tienen manuales de uso. Tienen preguntas en las paredes.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-6 border-l-4 border-brand-sun hover:bg-amber-50/50 transition-colors">
+                    <h4 class="font-semibold text-brand-dark mb-1">6. La escritura como agencia</h4>
+                    <p class="text-sm text-gray-600">Cada pared es un pizarrón. Cada mesa tiene papel y lápiz.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-6 border-l-4 border-brand-sun hover:bg-amber-50/50 transition-colors">
+                    <h4 class="font-semibold text-brand-dark mb-1">7. Identidades múltiples</h4>
+                    <p class="text-sm text-gray-600">Una misma silla puede ser de maestra, de estudiante, de curandera, de astrónoma.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-6 border-l-4 border-brand-sun hover:bg-amber-50/50 transition-colors">
+                    <h4 class="font-semibold text-brand-dark mb-1">8. Código abierto como defensa</h4>
+                    <p class="text-sm text-gray-600">Los planos de construcción son públicos. Cualquiera puede replicar la escuela.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-6 border-l-4 border-brand-sun hover:bg-amber-50/50 transition-colors">
+                    <h4 class="font-semibold text-brand-dark mb-1">9. Equidad como métrica</h4>
+                    <p class="text-sm text-gray-600">Si una madre no puede entrar, la escuela no está terminada.</p>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-6 border-l-4 border-brand-sun hover:bg-amber-50/50 transition-colors">
+                    <h4 class="font-semibold text-brand-dark mb-1">10. Coordinar, no solo optimizar</h4>
+                    <p class="text-sm text-gray-600">No la más barata, no la más rápida. La que funcione para todas.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ESPACIO PARA TODOS -->
-    <section class="py-20 bg-gradient-to-b from-tierra-100 to-tierra-50">
-        <div class="max-w-3xl mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="font-serif text-3xl md:text-4xl text-tierra-800 mb-4">Tu semilla en la semilloteca</h2>
-                <p class="text-tierra-500">Este espacio es de todos. Dejá tu grano. Contá qué vas a sembrar.</p>
+    <!-- CONTACTO / IVÁN -->
+    <section id="contacto" class="bg-brand-dark text-white py-24">
+        <div class="max-w-3xl mx-auto px-6 text-center">
+            <div class="w-16 h-16 rounded-full bg-brand-sun/10 flex items-center justify-center mx-auto mb-6">
+                <svg class="w-8 h-8 text-brand-sun" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
             </div>
+            <h2 class="font-serif text-4xl md:text-5xl text-brand-sun mb-4">Iván, acá están los planos</h2>
+            <p class="text-lg text-white/80 mb-2">¿Querés construir la escuela? ¿Querés aprender programación agéntica?</p>
+            <p class="text-white/60 mb-10">Escribime. O encontrame en la UNAE, Ecuador. Horario: 10:10 am → 10:10 pm.</p>
 
-            <div class="bg-white rounded-2xl p-8 shadow-sm border border-tierra-200">
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-tierra-700 mb-2">Tu nombre (o un apodo)</label>
-                    <input type="text" id="nombreSemilla" placeholder="Ej: Iván, la maestra, una estudiante de la UNAE..." class="semilla-input w-full px-4 py-3 rounded-xl border border-tierra-200 bg-tierra-50 text-tierra-800 placeholder-tierra-400 transition-all">
-                </div>
+            <a href="mailto:ivan@pulseboton.edu" class="inline-block px-10 py-4 bg-brand-sun text-brand-dark font-bold rounded-full text-lg hover:scale-105 transition-transform shadow-lg shadow-yellow-500/30 mb-8">
+                Escribirle a la maestra
+            </a>
 
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-tierra-700 mb-2">¿Qué vas a sembrar?</label>
-                    <textarea id="textoSemilla" rows="3" placeholder="Puede ser una idea, un sueño, una promesa, una pregunta... o literalmente una semilla." class="semilla-input w-full px-4 py-3 rounded-xl border border-tierra-200 bg-tierra-50 text-tierra-800 placeholder-tierra-400 transition-all resize-none"></textarea>
-                </div>
-
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-tierra-700 mb-2">¿Cuándo?</label>
-                    <input type="text" id="fechaSemilla" placeholder="Hoy, mañana, cuando termine la UNAE, cuando llueva..." class="semilla-input w-full px-4 py-3 rounded-xl border border-tierra-200 bg-tierra-50 text-tierra-800 placeholder-tierra-400 transition-all">
-                </div>
-
-                <button onclick="guardarSemilla()" class="w-full py-4 bg-maiz hover:bg-maiz-dark text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-maiz/20 flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
-                    Plantar mi semilla
-                </button>
-
-                <p class="text-xs text-tierra-400 text-center mt-4">⚠️ Esto se guarda solo en tu navegador. Si borrás el historial, las semillas se van. Como en la vida real.</p>
+            <div class="flex items-center justify-center gap-6 text-sm text-white/40 mt-12">
+                <span>🇪🇨 Ecuador</span>
+                <span>·</span>
+                <span>UNAE</span>
+                <span>·</span>
+                <span>Todos son préstamos</span>
             </div>
-
-            <!-- Semillas guardadas -->
-            <div id="jardinSemillas" class="mt-10 grid gap-4">
-                <!-- Las semillas aparecen acá -->
-            </div>
-        </div>
-    </section>
-
-    <!-- CIERRE -->
-    <section class="py-16 bg-tierra-800 text-tierra-100 text-center">
-        <div class="max-w-2xl mx-auto px-6">
-            <div class="w-16 h-16 rounded-full bg-maiz/10 flex items-center justify-center mx-auto mb-6">
-                <svg class="w-8 h-8 text-maiz" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            </div>
-            <h3 class="font-serif text-2xl text-maiz-light mb-4">"La escuela que cabe en la mochila"</h3>
-            <p class="text-tierra-300 mb-2">Un grano de maíz pesa 0.3 gramos.</p>
-            <p class="text-tierra-300 mb-2">Una mazorca tiene 400 granos.</p>
-            <p class="text-tierra-300 mb-6">Un campo de maíz alimenta a un pueblo.</p>
-            <p class="text-tierra-400 text-sm italic">Todo empieza con alguien que decide no comer el grano, sino plantarlo.</p>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer class="bg-tierra-900 text-tierra-500 py-8 text-center text-sm">
-        <p> Semilloteca · Pulse botón · Ecuador · UNAE</p>
-        <p class="mt-1 text-tierra-600">"Sólo de maíz serán las piernas, los brazos del hombre." — Popol Vuh</p>
+    <footer class="bg-black text-white/40 py-8 text-center text-sm">
+        <p> Pulse botón · Himno: "Mi casa" de Toni Ávila · Bandera arcoíris</p>
+        <p class="mt-1 text-white/20">El verdadero vacío no existe. En cada rincón inexplorado, aguardan océanos de mundos.</p>
     </footer>
-
-    <script>
-        // Animación del grano principal
-        function plantarGrano() {
-            const grano = document.getElementById('granoPrincipal');
-            grano.classList.add('plantado');
-            setTimeout(() => {
-                alert('🌱 Sembrado. Ahora bajá a leer cómo cuidarlo. O dejá tu propia semilla en el jardín.');
-            }, 500);
-        }
-
-        // Guardar semillas en localStorage
-        function guardarSemilla() {
-            const nombre = document.getElementById('nombreSemilla').value.trim();
-            const texto = document.getElementById('textoSemilla').value.trim();
-            const fecha = document.getElementById('fechaSemilla').value.trim();
-
-            if (!nombre || !texto) {
-                alert('Necesitamos al menos tu nombre y qué vas a sembrar, mija.');
-                return;
-            }
-
-            const semilla = {
-                id: Date.now(),
-                nombre: nombre,
-                texto: texto,
-                fecha: fecha || 'Pronto',
-                plantado: new Date().toLocaleDateString('es-EC')
-            };
-
-            let semillas = JSON.parse(localStorage.getItem('semillasPulseBoton') || '[]');
-            semillas.unshift(semilla);
-            localStorage.setItem('semillasPulseBoton', JSON.stringify(semillas));
-
-            // Limpiar inputs
-            document.getElementById('nombreSemilla').value = '';
-            document.getElementById('textoSemilla').value = '';
-            document.getElementById('fechaSemilla').value = '';
-
-            renderSemillas();
-        }
-
-        function renderSemillas() {
-            const contenedor = document.getElementById('jardinSemillas');
-            const semillas = JSON.parse(localStorage.getItem('semillasPulseBoton') || '[]');
-
-            if (semillas.length === 0) {
-                contenedor.innerHTML = `
-                    <div class="text-center py-8 text-tierra-400">
-                        <p class="text-4xl mb-2">🌾</p>
-                        <p class="text-sm">Todavía no hay semillas plantadas.</p>
-                        <p class="text-sm">Sé el primero en sembrar.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            contenedor.innerHTML = semillas.map(s => `
-                <div class="semilla-card bg-white rounded-xl p-6 border border-tierra-100 shadow-sm">
-                    <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-maiz to-maiz-dark flex items-center justify-center text-white text-lg shrink-0">🌱</div>
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="font-semibold text-tierra-800">${s.nombre}</span>
-                                <span class="text-xs text-tierra-400">· plantado el ${s.plantado}</span>
-                            </div>
-                            <p class="text-tierra-600 text-sm leading-relaxed mb-2">${s.texto}</p>
-                            <div class="flex items-center gap-2 text-xs text-hoja-dark bg-hoja-light/20 rounded-lg px-3 py-1.5 inline-flex">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                ${s.fecha}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Cargar semillas al iniciar
-        renderSemillas();
-    </script>
 
 </body>
 </html>
