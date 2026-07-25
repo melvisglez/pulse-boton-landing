@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semilloteca — Pulse botón</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                    },
+                    colors: {
+                        tierra: {
+                            50: '#faf6f1',
+                            100: '#f0e6d6',
+                            200: '#e0cdb0',
+                            300: '#c9ad82',
+                            400: '#b08d5c',
+                            500: '#967240',
+                            600: '#7a5a33',
+                            700: '#5e4428',
+                            800: '#422f1d',
+                            900: '#2a1d12',
+                        },
+                        maiz: {
+                            light: '#f4d03f',
+                            DEFAULT: '#d4ac0d',
+                            dark: '#9a7d0a',
+                        },
+                        hoja: {
+                            light: '#82e0aa',
+                            DEFAULT: '#27ae60',
+                            dark: '#1e8449',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes germinar {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.05) rotate(-2deg); }
+            50% { transform: scale(1.1) rotate(2deg); }
+            75% { transform: scale(1.05) rotate(-1deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        @keyframes crecer-hoja {
+            0% { transform: scaleY(0); opacity: 0; }
+            100% { transform: scaleY(1); opacity: 1; }
+        }
+        @keyframes brillo-maiz {
+            0%, 100% { box-shadow: 0 0 20px rgba(212,172,13,0.3); }
+            50% { box-shadow: 0 0 40px rgba(212,172,13,0.6), 0 0 80px rgba(212,172,13,0.2); }
+        }
+        .grano-maiz {
+            width: 80px;
+            height: 120px;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            background: linear-gradient(135deg, #f4d03f 0%, #d4ac0d 40%, #b7950b 70%, #9a7d0a 100%);
+            position: relative;
+            cursor: pointer;
+            animation: brillo-maiz 3s ease-in-out infinite;
+            transition: transform 0.3s ease;
+        }
+        .grano-maiz:hover {
+            transform: scale(1.08);
+        }
+        .grano-maiz::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 2px;
+        }
+        .grano-maiz::after {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 20px solid #82e0aa;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .grano-maiz.plantado::after {
+            opacity: 1;
+            animation: crecer-hoja 1s ease-out forwards;
+        }
+        .grano-maiz.plantado {
+            animation: germinar 2s ease-in-out infinite;
+        }
+        .semilla-input:focus {
+            outline: none;
+            border-color: #d4ac0d;
+            box-shadow: 0 0 0 3px rgba(212,172,13,0.2);
+        }
+        .semilla-card {
+            transition: all 0.3s ease;
+        }
+        .semilla-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(42,29,18,0.1);
+        }
+        .linea-tiempo::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #d4ac0d, #27ae60);
+        }
+        .voluta {
+            background: linear-gradient(to bottom, #faf6f1, #f0e6d6);
+            border: 1px solid #e0cdb0;
+            position: relative;
+        }
+        .voluta::before, .voluta::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #faf6f1;
+            border: 1px solid #e0cdb0;
+            border-radius: 50%;
+        }
+        .voluta::before {
+            top: -10px;
+            left: -10px;
+        }
+        .voluta::after {
+            bottom: -10px;
+            right: -10px;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="font-sans text-tierra-800 bg-tierra-50 antialiased">
+
+    <!-- HEADER -->
+    <header class="bg-tierra-800 text-tierra-100 py-6">
+        <div class="max-w-4xl mx-auto px-6 flex items-center justify-between">
+            <a href="index.html" class="text-sm text-tierra-300 hover:text-maiz transition-colors flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                Volver a Pulse botón
+            </a>
+            <span class="text-xs uppercase tracking-widest text-tierra-400">Semilloteca · Experimento #002</span>
+        </div>
+    </header>
+
+    <!-- HERO SEMILLA -->
+    <section class="bg-gradient-to-b from-tierra-800 via-tierra-700 to-tierra-600 text-tierra-100 py-20 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\'52\' height=\'26\' viewBox=\'0 0 52 26\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21-1.79 4-4 4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6-2.686 6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6 0-2.21 1.79-4 4-4 3.314 0 6 2.686 6 6 0 2.21-1.79 4-4 4v2c0 2.21-1.79 4-4 4-3.314 0-6-2.686-6-6 0-2.21 1.79-4 4-4 3.314 0 6 2.686 6 6v2z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')"></div>
+
+        <div class="max-w-3xl mx-auto px-6 text-center relative z-10">
+            <div class="grano-maiz mx-auto mb-8" id="granoPrincipal" onclick="plantarGrano()"></div>
+            <h1 class="font-serif text-4xl md:text-5xl text-maiz-light mb-4">Semilloteca</h1>
+            <p class="text-lg text-tierra-200 max-w-xl mx-auto mb-2">"El grano de maíz que cabe en la mochila pesa 0.3 gramos. Si lo plantás, pesa toneladas de futuro."</p>
+            <p class="text-sm text-tierra-400 italic">Hacé clic en el grano para sembrarlo</p>
+        </div>
+    </section>
+
+    <!-- POPOL VUH -->
+    <section class="py-20 bg-tierra-50">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="voluta rounded-2xl p-8 md:p-12 shadow-sm">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-10 h-10 rounded-full bg-tierra-700 flex items-center justify-center text-maiz-light text-lg">📜</div>
+                    <h2 class="font-serif text-2xl md:text-3xl text-tierra-800">Popol Vuh</h2>
+                </div>
+
+                <blockquote class="font-serif text-xl md:text-2xl text-tierra-700 italic leading-relaxed mb-8 border-l-4 border-maiz pl-6">
+                    "Ésta es la narración de cómo se realizó todo lo pensado, todo lo concertado, todo lo meditado, todo lo que se hizo en el cielo, en la tierra, en el mar, en el infinito. Y entonces dijeron los dioses:<br><br>
+                    'Sólo el maíz será la carne del hombre, el maíz será el sustento. Sólo de maíz serán las piernas, los brazos del hombre, sólo de maíz será el cuerpo de la gente.'"
+                </blockquote>
+
+                <p class="text-sm text-tierra-500 leading-relaxed">
+                    Así nació el hombre según los mayas-k'iche': no de barro, no de piedra, no de madera. De maíz. De una semilla que alguien decidió no comer, sino plantar. Esa es la diferencia entre sobrevivir y crear.
+                </p>
+
+                <div class="mt-8 pt-6 border-t border-tierra-200">
+                    <p class="text-xs text-tierra-400 uppercase tracking-widest mb-2">Para reflexionar</p>
+                    <p class="text-tierra-600 italic">"Si los dioses eligieron el maíz para hacer al hombre, ¿qué estás eligiendo vos para hacer tu futuro?"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INSTRUCCIONES DE SIEMBRA -->
+    <section class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-serif text-3xl md:text-4xl text-tierra-800 mb-4">Cómo sembrar tu grano</h2>
+                <p class="text-tierra-500">Instrucciones reales. Funcionan en una maceta, en un patio, en la tierra de la escuela.</p>
+            </div>
+
+            <div class="relative linea-tiempo space-y-8">
+                <!-- Paso 1 -->
+                <div class="flex gap-6 items-start pl-4">
+                    <div class="w-12 h-12 rounded-full bg-maiz text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-md z-10">1</div>
+                    <div class="bg-tierra-50 rounded-xl p-6 flex-1">
+                        <h3 class="font-semibold text-tierra-800 text-lg mb-2">Elegí tu semilla</h3>
+                        <p class="text-tierra-600 text-sm leading-relaxed">Buscá un grano de maíz criollo, de los que todavía saben a maíz. No importa si es amarillo, blanco, morado o negro. Lo importante es que sea <strong>vivo</strong>: si lo ponés en agua, tiene que flotar con ganas.</p>
+                    </div>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="flex gap-6 items-start pl-4">
+                    <div class="w-12 h-12 rounded-full bg-maiz text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-md z-10">2</div>
+                    <div class="bg-tierra-50 rounded-xl p-6 flex-1">
+                        <h3 class="font-semibold text-tierra-800 text-lg mb-2">Prepará la tierra</h3>
+                        <p class="text-tierra-600 text-sm leading-relaxed">En una maceta con agujeros, mezclá tierra negra con un poco de compost o cascarilla de arroz. La tierra tiene que estar suelta, como si respirara. Si apretás un puñado y se deshace, está bien.</p>
+                    </div>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="flex gap-6 items-start pl-4">
+                    <div class="w-12 h-12 rounded-full bg-maiz text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-md z-10">3</div>
+                    <div class="bg-tierra-50 rounded-xl p-6 flex-1">
+                        <h3 class="font-semibold text-tierra-800 text-lg mb-2">Plantá a 3 dedos de profundidad</h3>
+                        <p class="text-tierra-600 text-sm leading-relaxed">Hacé un hoyo con tu dedo corazón, hasta la segunda falange. Meté el grano de puntita hacia abajo, como si fuera a mirar el cielo desde abajo. Tapalo con tierra suelta. No aprietes.</p>
+                    </div>
+                </div>
+
+                <!-- Paso 4 -->
+                <div class="flex gap-6 items-start pl-4">
+                    <div class="w-12 h-12 rounded-full bg-hoja text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-md z-10">4</div>
+                    <div class="bg-tierra-50 rounded-xl p-6 flex-1">
+                        <h3 class="font-semibold text-tierra-800 text-lg mb-2">Regá con paciencia</h3>
+                        <p class="text-tierra-600 text-sm leading-relaxed">La primera vez, regá hasta que el agua salga por los agujeros de la maceta. Después, cada 2-3 días, cuando la tierra de arriba esté seca al tacto. El maíz no le gusta el agua encharcada, pero tampoco la sequía.</p>
+                    </div>
+                </div>
+
+                <!-- Paso 5 -->
+                <div class="flex gap-6 items-start pl-4">
+                    <div class="w-12 h-12 rounded-full bg-hoja-dark text-white flex items-center justify-center font-bold text-lg shrink-0 shadow-md z-10">5</div>
+                    <div class="bg-tierra-50 rounded-xl p-6 flex-1">
+                        <h3 class="font-semibold text-tierra-800 text-lg mb-2">Esperá y mirá</h3>
+                        <p class="text-tierra-600 text-sm leading-relaxed">Entre el día 5 y el 10, vas a ver una lanza verde rompiendo la tierra. No la toques. No la apures. Solo mirá. Ese es el primer acto de fe que la tierra te regala.</p>
+                        <div class="mt-4 bg-hoja-light/20 rounded-lg p-4 border border-hoja/20">
+                            <p class="text-xs text-hoja-dark font-medium">🌱 Matematica simple: 0.3 gramos → 2 metros de planta → 1 mazorca → 400 granos nuevos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ESPACIO PARA TODOS -->
+    <section class="py-20 bg-gradient-to-b from-tierra-100 to-tierra-50">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="font-serif text-3xl md:text-4xl text-tierra-800 mb-4">Tu semilla en la semilloteca</h2>
+                <p class="text-tierra-500">Este espacio es de todos. Dejá tu grano. Contá qué vas a sembrar.</p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-8 shadow-sm border border-tierra-200">
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-tierra-700 mb-2">Tu nombre (o un apodo)</label>
+                    <input type="text" id="nombreSemilla" placeholder="Ej: Iván, la maestra, una estudiante de la UNAE..." class="semilla-input w-full px-4 py-3 rounded-xl border border-tierra-200 bg-tierra-50 text-tierra-800 placeholder-tierra-400 transition-all">
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-tierra-700 mb-2">¿Qué vas a sembrar?</label>
+                    <textarea id="textoSemilla" rows="3" placeholder="Puede ser una idea, un sueño, una promesa, una pregunta... o literalmente una semilla." class="semilla-input w-full px-4 py-3 rounded-xl border border-tierra-200 bg-tierra-50 text-tierra-800 placeholder-tierra-400 transition-all resize-none"></textarea>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-tierra-700 mb-2">¿Cuándo?</label>
+                    <input type="text" id="fechaSemilla" placeholder="Hoy, mañana, cuando termine la UNAE, cuando llueva..." class="semilla-input w-full px-4 py-3 rounded-xl border border-tierra-200 bg-tierra-50 text-tierra-800 placeholder-tierra-400 transition-all">
+                </div>
+
+                <button onclick="guardarSemilla()" class="w-full py-4 bg-maiz hover:bg-maiz-dark text-white font-semibold rounded-xl transition-all hover:shadow-lg hover:shadow-maiz/20 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                    Plantar mi semilla
+                </button>
+
+                <p class="text-xs text-tierra-400 text-center mt-4">⚠️ Esto se guarda solo en tu navegador. Si borrás el historial, las semillas se van. Como en la vida real.</p>
+            </div>
+
+            <!-- Semillas guardadas -->
+            <div id="jardinSemillas" class="mt-10 grid gap-4">
+                <!-- Las semillas aparecen acá -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CIERRE -->
+    <section class="py-16 bg-tierra-800 text-tierra-100 text-center">
+        <div class="max-w-2xl mx-auto px-6">
+            <div class="w-16 h-16 rounded-full bg-maiz/10 flex items-center justify-center mx-auto mb-6">
+                <svg class="w-8 h-8 text-maiz" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <h3 class="font-serif text-2xl text-maiz-light mb-4">"La escuela que cabe en la mochila"</h3>
+            <p class="text-tierra-300 mb-2">Un grano de maíz pesa 0.3 gramos.</p>
+            <p class="text-tierra-300 mb-2">Una mazorca tiene 400 granos.</p>
+            <p class="text-tierra-300 mb-6">Un campo de maíz alimenta a un pueblo.</p>
+            <p class="text-tierra-400 text-sm italic">Todo empieza con alguien que decide no comer el grano, sino plantarlo.</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-tierra-900 text-tierra-500 py-8 text-center text-sm">
+        <p> Semilloteca · Pulse botón · Ecuador · UNAE</p>
+        <p class="mt-1 text-tierra-600">"Sólo de maíz serán las piernas, los brazos del hombre." — Popol Vuh</p>
+    </footer>
+
+    <script>
+        // Animación del grano principal
+        function plantarGrano() {
+            const grano = document.getElementById('granoPrincipal');
+            grano.classList.add('plantado');
+            setTimeout(() => {
+                alert('🌱 Sembrado. Ahora bajá a leer cómo cuidarlo. O dejá tu propia semilla en el jardín.');
+            }, 500);
+        }
+
+        // Guardar semillas en localStorage
+        function guardarSemilla() {
+            const nombre = document.getElementById('nombreSemilla').value.trim();
+            const texto = document.getElementById('textoSemilla').value.trim();
+            const fecha = document.getElementById('fechaSemilla').value.trim();
+
+            if (!nombre || !texto) {
+                alert('Necesitamos al menos tu nombre y qué vas a sembrar, mija.');
+                return;
+            }
+
+            const semilla = {
+                id: Date.now(),
+                nombre: nombre,
+                texto: texto,
+                fecha: fecha || 'Pronto',
+                plantado: new Date().toLocaleDateString('es-EC')
+            };
+
+            let semillas = JSON.parse(localStorage.getItem('semillasPulseBoton') || '[]');
+            semillas.unshift(semilla);
+            localStorage.setItem('semillasPulseBoton', JSON.stringify(semillas));
+
+            // Limpiar inputs
+            document.getElementById('nombreSemilla').value = '';
+            document.getElementById('textoSemilla').value = '';
+            document.getElementById('fechaSemilla').value = '';
+
+            renderSemillas();
+        }
+
+        function renderSemillas() {
+            const contenedor = document.getElementById('jardinSemillas');
+            const semillas = JSON.parse(localStorage.getItem('semillasPulseBoton') || '[]');
+
+            if (semillas.length === 0) {
+                contenedor.innerHTML = `
+                    <div class="text-center py-8 text-tierra-400">
+                        <p class="text-4xl mb-2">🌾</p>
+                        <p class="text-sm">Todavía no hay semillas plantadas.</p>
+                        <p class="text-sm">Sé el primero en sembrar.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            contenedor.innerHTML = semillas.map(s => `
+                <div class="semilla-card bg-white rounded-xl p-6 border border-tierra-100 shadow-sm">
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-maiz to-maiz-dark flex items-center justify-center text-white text-lg shrink-0">🌱</div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="font-semibold text-tierra-800">${s.nombre}</span>
+                                <span class="text-xs text-tierra-400">· plantado el ${s.plantado}</span>
+                            </div>
+                            <p class="text-tierra-600 text-sm leading-relaxed mb-2">${s.texto}</p>
+                            <div class="flex items-center gap-2 text-xs text-hoja-dark bg-hoja-light/20 rounded-lg px-3 py-1.5 inline-flex">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                ${s.fecha}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Cargar semillas al iniciar
+        renderSemillas();
+    </script>
+
+</body>
+</html>
